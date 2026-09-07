@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Sales Analytics Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-logo">
+                S
+            </div>
+
+            <div class="brand-text">
+
+                <h2>SalesPro</h2>
+
+                <span>
+                    Analytics Platform
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-section-title">
+            MAIN MENU
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="index.html"
+                class="nav-item active"
+            >
+
+                <span class="nav-icon">
+                    <span>▦</span>
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="admin.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    <span>⚙</span>
+                </span>
+
+                <span>
+                    Admin Panel
+                </span>
+
+            </a>
+
+        </nav>
+
+
+
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             TOP HEADER
+             ================================================= -->
+
+        <header class="top-header">
+
+            <div class="mobile-menu">
+                ☰
+            </div>
+
+
+            <div class="header-title">
+
+                <div class="breadcrumb">
+                    Dashboard
+                    <span>/</span>
+                    Overview
+                </div>
+
+                <h1>
+                    Sales Overview
+                </h1>
+
+                <p>
+                    Monitor your sales performance and business insights.
+                </p>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <div class="data-status">
+
+                    <span class="status-dot"></span>
+
+                    <span>
+                        Live Data
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="header-icon-button"
+                    title="Notifications"
+                >
+                    🔔
+                </button>
+
+
+                <a
+                    href="admin.html"
+                    class="header-admin-button"
+                >
+                    Admin Panel
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             FILTER BAR
+             ================================================= -->
+
+        <section class="filter-card">
+
+            <div class="filter-heading">
+
+                <div class="filter-title">
+
+                    <span class="filter-symbol">
+                        ☷
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Filters
+                        </strong>
+
+                        <small>
+                            Refine your dashboard data
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="resetFilters"
+                    class="reset-button"
+                >
+                    ↻ Reset
+                </button>
+
+            </div>
+
+
+            <div class="filters">
+
+
+                <!-- Region -->
+
+                <div class="filter-group">
+
+                    <label>
+                        Region
+                    </label>
+
+                    <select
+                        id="regionFilter"
+                    >
+
+                        <option value="">
+                            All
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Category -->
+
+                <div class="filter-group">
+
+                    <label>
+                        Product Category
+                    </label>
+
+                    <select
+                        id="categoryFilter"
+                    >
+
+                        <option value="">
+                            All
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Sales Rep -->
+
+                <div class="filter-group">
+
+                    <label>
+                        Sales Representative
+                    </label>
+
+                    <select
+                        id="repFilter"
+                    >
+
+                        <option value="">
+                            All
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Channel -->
+
+                <div class="filter-group">
+
+                    <label>
+                        Sales Channel
+                    </label>
+
+                    <select
+                        id="channelFilter"
+                    >
+
+                        <option value="">
+                            All
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             KPI CARDS
+             ================================================= -->
+
+        <section class="kpi-grid">
+
+
+            <!-- Total Sales -->
+
+            <div class="kpi-card">
+
+                <div class="kpi-top">
+
+                    <div class="kpi-icon sales-icon">
+                        $
+                    </div>
+
+                    <span
+                        class="kpi-badge positive"
+                    >
+                        Sales
+                    </span>
+
+                </div>
+
+                <div class="kpi-label">
+                    Total Sales
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="totalSales"
+                >
+                    $0.00
+                </div>
+
+                <div class="kpi-footer">
+                    Revenue generated
+                </div>
+
+            </div>
+
+
+            <!-- Quantity -->
+
+            <div class="kpi-card">
+
+                <div class="kpi-top">
+
+                    <div class="kpi-icon quantity-icon">
+                        #
+                    </div>
+
+                    <span
+                        class="kpi-badge blue"
+                    >
+                        Units
+                    </span>
+
+                </div>
+
+                <div class="kpi-label">
+                    Total Quantity
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="totalQuantity"
+                >
+                    0
+                </div>
+
+                <div class="kpi-footer">
+                    Products sold
+                </div>
+
+            </div>
+
+
+            <!-- Average -->
+
+            <div class="kpi-card">
+
+                <div class="kpi-top">
+
+                    <div class="kpi-icon average-icon">
+                        ↗
+                    </div>
+
+                    <span
+                        class="kpi-badge purple"
+                    >
+                        Average
+                    </span>
+
+                </div>
+
+                <div class="kpi-label">
+                    Average Sale
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="averageSale"
+                >
+                    $0.00
+                </div>
+
+                <div class="kpi-footer">
+                    Average transaction value
+                </div>
+
+            </div>
+
+
+            <!-- Representatives -->
+
+            <div class="kpi-card">
+
+                <div class="kpi-top">
+
+                    <div class="kpi-icon rep-icon">
+                        ★
+                    </div>
+
+                    <span
+                        class="kpi-badge orange"
+                    >
+                        Team
+                    </span>
+
+                </div>
+
+                <div class="kpi-label">
+                    Sales Representatives
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="totalReps"
+                >
+                    0
+                </div>
+
+                <div class="kpi-footer">
+                    Active representatives
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHART ROW 1
+             ================================================= -->
+
+        <section class="dashboard-grid main-charts">
+
+
+            <!-- Sales Trend -->
+
+            <div class="dashboard-card chart-large">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Sales Trend
+                        </h2>
+
+                        <p>
+                            Revenue performance over time
+                        </p>
+
+                    </div>
+
+
+                    <div class="chart-menu">
+                        Monthly
+                    </div>
+
+                </div>
+
+
+                <div class="chart-container trend-container">
+
+                    <canvas
+                        id="salesTrendChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- Region -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Sales by Region
+                        </h2>
+
+                        <p>
+                            Regional performance
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-container">
+
+                    <canvas
+                        id="regionChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHART ROW 2
+             ================================================= -->
+
+        <section class="dashboard-grid three-charts">
+
+
+            <!-- Category -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Product Categories
+                        </h2>
+
+                        <p>
+                            Revenue distribution
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-container doughnut-container">
+
+                    <canvas
+                        id="categoryChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- Sales Rep -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Top Sales Representatives
+                        </h2>
+
+                        <p>
+                            Highest revenue performers
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-container rep-chart-container">
+
+                    <canvas
+                        id="repChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- Customer Type -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Customer Type
+                        </h2>
+
+                        <p>
+                            New vs returning customers
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-container doughnut-container">
+
+                    <canvas
+                        id="customerChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHART ROW 3
+             ================================================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- Sales Channel -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Sales Channel
+                        </h2>
+
+                        <p>
+                            Online vs retail performance
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-container channel-container">
+
+                    <canvas
+                        id="channelChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- Quick Insights -->
+
+            <div class="dashboard-card insights-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Quick Insights
+                        </h2>
+
+                        <p>
+                            Key performance indicators
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="quickInsights"
+                    class="insights-list"
+                >
+
+                    <div class="insight-item">
+
+                        <div class="insight-icon">
+                            ★
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Top Region
+                            </strong>
+
+                            <span id="topRegion">
+                                —
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="insight-item">
+
+                        <div class="insight-icon">
+                            ◆
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Top Category
+                            </strong>
+
+                            <span id="topCategory">
+                                —
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="insight-item">
+
+                        <div class="insight-icon">
+                            ↑
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Top Sales Rep
+                            </strong>
+
+                            <span id="topRep">
+                                —
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="insight-item">
+
+                        <div class="insight-icon">
+                            $
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Highest Sale
+                            </strong>
+
+                            <span id="highestSale">
+                                $0.00
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RECENT SALES
+             ================================================= -->
+
+        <section class="dashboard-card recent-sales-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Recent Sales
+                    </h2>
+
+                    <p>
+                        Latest transactions from your dataset
+                    </p>
+
+                </div>
+
+
+                <div class="table-count">
+
+                    <span id="dashboardRecordCount">
+                        0 records
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Product ID
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Sales Rep
+                            </th>
+
+                            <th>
+                                Region
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th>
+                                Sales Amount
+                            </th>
+
+                            <th>
+                                Channel
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="salesTableBody"
+                    >
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <footer class="dashboard-footer">
+
+            <span>
+                SalesPro Analytics
+            </span>
+
+            <span>
+                Sales Management Dashboard
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <!-- =====================================================
+         CHART.JS
+         ===================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js"
+    ></script>
+
+
+    <!-- =====================================================
+         DASHBOARD JS
+         ===================================================== -->
+
+    <script
+        src="js/dashboard.js"
+    ></script>
+
+</body>
+
+</html>

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Sales Dashboard - Admin Panel</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <div class="logo-icon">
+                S
+            </div>
+
+            <div>
+                <h2>Sales Admin</h2>
+
+                <span>
+                    Management Panel
+                </span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="index.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    📊
+                </span>
+
+                Dashboard
+
+            </a>
+
+
+            <a
+                href="admin.html"
+                class="nav-item active"
+            >
+
+                <span class="nav-icon">
+                    ⚙️
+                </span>
+
+                Admin Panel
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <span>
+                Sales Management System
+            </span>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         LOGIN OVERLAY
+         ===================================================== -->
+
+    <div
+        id="adminLoginOverlay"
+        class="login-overlay"
+    >
+
+        <div class="login-card">
+
+            <div class="login-logo">
+                <div class="logo-icon">
+                    S
+                </div>
+
+                <div>
+                    <h2>
+                        Sales Admin
+                    </h2>
+
+                    <span>
+                        Management Panel
+                    </span>
+                </div>
+            </div>
+
+
+            <form
+                id="adminLoginForm"
+                onsubmit="handleLogin(event)"
+            >
+
+                <div class="form-group">
+
+                    <label for="adminUsername">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="adminUsername"
+                        placeholder="Enter username"
+                        required
+                        autocomplete="username"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="adminPassword">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        placeholder="Enter password"
+                        required
+                        autocomplete="current-password"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+
+                    Login
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTENT (hidden until login)
+         ===================================================== -->
+
+    <main
+        class="main-content"
+        id="adminMainContent"
+        style="display: none;"
+    >
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="page-header">
+
+            <div>
+
+                <h1>
+                    Admin Panel
+                </h1>
+
+                <p>
+                    Manage your sales records
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button
+                    class="secondary-button"
+                    onclick="logout()"
+                >
+
+                    ⏻ Logout
+
+                </button>
+
+
+                <button
+                    class="secondary-button"
+                    onclick="exportCSV()"
+                >
+
+                    ⬇ Export CSV
+
+                </button>
+
+
+                <label
+                    class="secondary-button import-button"
+                >
+
+                    ⬆ Import CSV
+
+                    <input
+                        type="file"
+                        id="csvFileInput"
+                        accept=".csv"
+                        onchange="importCSV(event)"
+                        hidden
+                    >
+
+                </label>
+
+
+                <button
+                    class="add-button"
+                    onclick="openAddModal()"
+                >
+
+                    + Add Sale
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             STATISTICS
+             ================================================= -->
+
+        <section class="admin-stats">
+
+            <div class="admin-stat-card">
+
+                <div class="stat-icon">
+                    📦
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Records
+                    </span>
+
+                    <strong
+                        id="totalRecords"
+                    >
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Sales
+                    </span>
+
+                    <strong
+                        id="adminTotalSales"
+                    >
+                        $0.00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <div class="stat-icon">
+                    📈
+                </div>
+
+                <div>
+
+                    <span>
+                        Average Sale
+                    </span>
+
+                    <strong
+                        id="adminAverageSale"
+                    >
+                        $0.00
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TOOLBAR
+             ================================================= -->
+
+        <section class="admin-card">
+
+            <div class="admin-toolbar">
+
+                <div class="search-wrapper">
+
+                    <span class="search-icon">
+                        🔍
+                    </span>
+
+                    <input
+                        type="text"
+                        id="adminSearch"
+                        placeholder="Search sales records..."
+                    >
+
+                </div>
+
+
+                <div
+                    id="recordCount"
+                    class="record-count"
+                >
+                    Showing 0 records
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 TABLE
+                 ============================================= -->
+
+            <div class="table-container">
+
+                <table class="admin-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Product ID
+                            </th>
+
+                            <th>
+                                Sale Date
+                            </th>
+
+                            <th>
+                                Sales Rep
+                            </th>
+
+                            <th>
+                                Region
+                            </th>
+
+                            <th>
+                                Sales Amount
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Unit Cost
+                            </th>
+
+                            <th>
+                                Unit Price
+                            </th>
+
+                            <th>
+                                Customer Type
+                            </th>
+
+                            <th>
+                                Discount
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                            <th>
+                                Channel
+                            </th>
+
+                            <th>
+                                Region / Rep
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="adminTableBody"
+                    >
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- =============================================
+                 PAGINATION
+                 ============================================= -->
+
+            <div
+                id="pagination"
+                class="pagination"
+            >
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         ADD / EDIT MODAL
+         ===================================================== -->
+
+    <div
+        id="saleModal"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+
+            <!-- =============================================
+                 MODAL HEADER
+                 ============================================= -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2
+                        id="modalTitle"
+                    >
+                        Add Sale
+                    </h2>
+
+                    <p>
+                        Enter sales information
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close-button"
+                    onclick="closeModal()"
+                    type="button"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- =============================================
+                 FORM
+                 ============================================= -->
+
+            <form
+                id="saleForm"
+                onsubmit="saveSale(event)"
+            >
+
+                <input
+                    type="hidden"
+                    id="editIndex"
+                >
+
+
+                <div class="form-grid">
+
+
+                    <!-- Product ID -->
+
+                    <div class="form-group">
+
+                        <label for="productId">
+                            Product ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productId"
+                            required
+                            placeholder="Enter Product ID"
+                        >
+
+                    </div>
+
+
+                    <!-- Sale Date -->
+
+                    <div class="form-group">
+
+                        <label for="saleDate">
+                            Sale Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="saleDate"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Sales Rep -->
+
+                    <div class="form-group">
+
+                        <label for="salesRep">
+                            Sales Representative
+                        </label>
+
+                        <input
+                            type="text"
+                            id="salesRep"
+                            required
+                            placeholder="Enter sales rep"
+                        >
+
+                    </div>
+
+
+                    <!-- Region -->
+
+                    <div class="form-group">
+
+                        <label for="region">
+                            Region
+                        </label>
+
+                        <select
+                            id="region"
+                            required
+                        >
+
+                            <option value="">
+                                Select Region
+                            </option>
+
+                            <option value="North">
+                                North
+                            </option>
+
+                            <option value="South">
+                                South
+                            </option>
+
+                            <option value="East">
+                                East
+                            </option>
+
+                            <option value="West">
+                                West
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Sales Amount -->
+
+                    <div class="form-group">
+
+                        <label for="salesAmount">
+                            Sales Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="salesAmount"
+                            step="0.01"
+                            min="0"
+                            required
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+
+                    <!-- Quantity -->
+
+                    <div class="form-group">
+
+                        <label for="quantitySold">
+                            Quantity Sold
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quantitySold"
+                            min="0"
+                            required
+                            placeholder="0"
+                        >
+
+                    </div>
+
+
+                    <!-- Category -->
+
+                    <div class="form-group">
+
+                        <label for="productCategory">
+                            Product Category
+                        </label>
+
+                        <select
+                            id="productCategory"
+                            required
+                        >
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="Furniture">
+                                Furniture
+                            </option>
+
+                            <option value="Food">
+                                Food
+                            </option>
+
+                            <option value="Clothing">
+                                Clothing
+                            </option>
+
+                            <option value="Electronics">
+                                Electronics
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Unit Cost -->
+
+                    <div class="form-group">
+
+                        <label for="unitCost">
+                            Unit Cost
+                        </label>
+
+                        <input
+                            type="number"
+                            id="unitCost"
+                            step="0.01"
+                            min="0"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+
+                    <!-- Unit Price -->
+
+                    <div class="form-group">
+
+                        <label for="unitPrice">
+                            Unit Price
+                        </label>
+
+                        <input
+                            type="number"
+                            id="unitPrice"
+                            step="0.01"
+                            min="0"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+
+                    <!-- Customer Type -->
+
+                    <div class="form-group">
+
+                        <label for="customerType">
+                            Customer Type
+                        </label>
+
+                        <select
+                            id="customerType"
+                            required
+                        >
+
+                            <option value="">
+                                Select Customer Type
+                            </option>
+
+                            <option value="New">
+                                New
+                            </option>
+
+                            <option value="Returning">
+                                Returning
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Discount -->
+
+                    <div class="form-group">
+
+                        <label for="discount">
+                            Discount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="discount"
+                            step="0.01"
+                            min="0"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+
+                    <!-- Payment Method -->
+
+                    <div class="form-group">
+
+                        <label for="paymentMethod">
+                            Payment Method
+                        </label>
+
+                        <select
+                            id="paymentMethod"
+                            required
+                        >
+
+                            <option value="">
+                                Select Payment Method
+                            </option>
+
+                            <option value="Cash">
+                                Cash
+                            </option>
+
+                            <option value="Credit Card">
+                                Credit Card
+                            </option>
+
+                            <option value="Bank Transfer">
+                                Bank Transfer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Sales Channel -->
+
+                    <div class="form-group">
+
+                        <label for="salesChannel">
+                            Sales Channel
+                        </label>
+
+                        <select
+                            id="salesChannel"
+                            required
+                        >
+
+                            <option value="">
+                                Select Sales Channel
+                            </option>
+
+                            <option value="Online">
+                                Online
+                            </option>
+
+                            <option value="Retail">
+                                Retail
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Region / Sales Rep -->
+
+                    <div class="form-group readonly-field">
+
+                        <label>
+                            Region / Sales Rep
+                        </label>
+
+                        <input
+                            type="text"
+                            value="Automatically generated"
+                            readonly
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     FORM BUTTONS
+                     ========================================= -->
+
+                <div class="form-buttons">
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        onclick="closeModal()"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        Save Sale
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>
